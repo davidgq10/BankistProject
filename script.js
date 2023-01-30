@@ -14,7 +14,7 @@ const section1 = document.getElementById('section--1');
 const tabs = document.querySelectorAll('.operations__tab');
 const tabsContainer = document.querySelector('.operations__tab-container');
 const tabsContent = document.querySelectorAll('.operations__content');
-const nav = document.querySelector('.nav')
+const nav = document.querySelector('.nav');
 
 const openModal = function (e) {
   e.preventDefault();
@@ -39,8 +39,10 @@ document.addEventListener('keydown', function (e) {
   }
 });
 
-// *** Old school scrolling ***
+///////////////////////////////////
+// SCROLL TO
 btnScrollTo.addEventListener('click', function (e) {
+  // *** Old school scrolling ***
   // const s1coords = section1.getBoundingClientRect()
   //
   // //Scrolling first method
@@ -80,7 +82,8 @@ document.querySelector('.nav__links').addEventListener('click', function (e) {
   }
 });
 
-//Operations listener
+///////////////////////////////////
+// OPERATION LISTENER
 tabsContainer.addEventListener('click', function (e) {
   // Matching strategy
   const clicked = e.target.closest('.operations__tab');
@@ -90,29 +93,44 @@ tabsContainer.addEventListener('click', function (e) {
 
   //Remove active classes
   tabs.forEach(t => t.classList.remove('operations__tab--active'));
-  tabsContent.forEach(c=>c.classList.remove('operations__content--active'))
-  
+  tabsContent.forEach(c => c.classList.remove('operations__content--active'));
+
   //Active tab
   clicked.classList.add('operations__tab--active');
 
   //Activate content area
   document
     .querySelector(`.operations__content--${clicked.dataset.tab}`)
-    .classList.add('operations__content--active').style.color = 'red' ;
+    .classList.add('operations__content--active').style.color = 'red';
 });
 
-//Menu fade animation
-nav.addEventListener('mouseover',function (e) {
-console.log('Hola')
-  if(e.target.classList.contains('nav-links')){
+///////////////////////////////////
+// MENU FADE ANIMATION
+const handleHover = function (e) {
+  if (e.target.classList.contains('nav__link')) {
     const link = e.target;
-    console.log(link)
-    const siblings = link.closest ('.nav').querySelector('.nav__link')
-    console.log(siblings)
-    const logo = link.closest('.nav').querySelector('img')
-  }
-})
+    const siblings = link.closest('.nav').querySelectorAll('.nav__link');
+    const logo = link.closest('.nav').querySelector('img');
 
+    siblings.forEach(el => {
+      if (el !== link) el.style.opacity = this;
+    });
+    logo.style.opacity = this;
+  }
+};
+
+// Passing "argument" into handler
+nav.addEventListener('mouseover', handleHover.bind(0.5));
+nav.addEventListener('mouseout', handleHover.bind(1));
+
+///////////////////////////////////
+// STICKY NAVIGATION
+// this is not the best way to implement, because an event that needs to run on every mouse movement is very bad for performance
+const initialCoords = section1.getBoundingClientRect();
+window.addEventListener('scroll', function (e) {
+  if (this.window.scrollY > initialCoords.top) nav.classList.add('sticky');
+  else nav.classList.remove('sticky');
+});
 
 /*
 ///////////////////////////////////////
