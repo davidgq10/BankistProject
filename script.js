@@ -10,6 +10,11 @@ const btnCloseModal = document.querySelector('.btn--close-modal');
 const btnsOpenModal = document.querySelectorAll('.btn--show-modal');
 const btnScrollTo = document.querySelector('.btn--scroll-to');
 const section1 = document.getElementById('section--1');
+//Operations
+const tabs = document.querySelectorAll('.operations__tab');
+const tabsContainer = document.querySelector('.operations__tab-container');
+const tabsContent = document.querySelectorAll('.operations__content');
+const nav = document.querySelector('.nav')
 
 const openModal = function (e) {
   e.preventDefault();
@@ -53,6 +58,7 @@ btnScrollTo.addEventListener('click', function (e) {
 });
 
 /////////////////////////////////////////////////////
+// *** Old school scrolling ***
 // Page navigation
 // document.querySelectorAll('.nav__link').forEach(function (el) {
 //   el.addEventListener('click', function (e) {
@@ -66,16 +72,47 @@ btnScrollTo.addEventListener('click', function (e) {
 // 2 Determine what elemento originated the event
 
 document.querySelector('.nav__links').addEventListener('click', function (e) {
-    // Matching strategy
+  // Matching strategy
   if (e.target.classList.contains('nav__link')) {
     e.preventDefault();
     const id = e.target.getAttribute('href');
     document.querySelector(id).scrollIntoView({ behavior: 'smooth' });
-  };
+  }
+});
+
+//Operations listener
+tabsContainer.addEventListener('click', function (e) {
+  // Matching strategy
+  const clicked = e.target.closest('.operations__tab');
+
+  //Guard clause
+  if (!clicked) return;
+
+  //Remove active classes
+  tabs.forEach(t => t.classList.remove('operations__tab--active'));
+  tabsContent.forEach(c=>c.classList.remove('operations__content--active'))
   
+  //Active tab
+  clicked.classList.add('operations__tab--active');
+
+  //Activate content area
+  document
+    .querySelector(`.operations__content--${clicked.dataset.tab}`)
+    .classList.add('operations__content--active').style.color = 'red' ;
+});
+
+//Menu fade animation
+nav.addEventListener('mouseover',function (e) {
+console.log('Hola')
+  if(e.target.classList.contains('nav-links')){
+    const link = e.target;
+    console.log(link)
+    const siblings = link.closest ('.nav').querySelector('.nav__link')
+    console.log(siblings)
+    const logo = link.closest('.nav').querySelector('img')
+  }
 })
 
-// *** Old school scrolling ***
 
 /*
 ///////////////////////////////////////
